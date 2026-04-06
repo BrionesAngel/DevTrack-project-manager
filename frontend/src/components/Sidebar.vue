@@ -11,4 +11,3 @@
 defineProps<{ open: boolean }>();
 defineEmits(['close'])
 </script>
-<style scoped></style>
