@@ -1,7 +1,8 @@
 <template>
   <div v-if="open" @click="$emit('close')" class="fixed inset-0 bg-black/50 z-40"></div>
 
-  <div class="fixed top-0 left-0 h-full w-64 bg-white shadow transform transition-transform duration-300 z-50"
+  <div
+    class="fixed top-0 left-0 h-full w-64 bg-slate-100 border-r-2 border-gray-700 shadow-xl shadow-zinc-800 transform transition-transform duration-300 z-50"
     :class="open ? 'translate-x-0' : '-translate-x-full'">
     <slot></slot>
   </div>
