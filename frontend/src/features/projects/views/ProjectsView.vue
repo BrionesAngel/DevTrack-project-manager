@@ -1,9 +1,9 @@
 <template>
   <div>
-    kanban view
+    projectsView
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 
 </script>
