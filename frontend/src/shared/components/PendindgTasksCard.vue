@@ -1,5 +1,5 @@
 <template>
-  <div class="flex bg-zinc-100 p-4 rounded-md border-0.5 border-teal-800 shadow-sm shadow-teal-950 transition-transform duration-200
+  <div class="flex bg-zinc-100 p-4 m-4 rounded-md border-0.5 border-teal-800 shadow-sm shadow-teal-950 transition-transform duration-200
       hover:scale-105
       hover:shadow-md
       hover:shadow-yellow-600
