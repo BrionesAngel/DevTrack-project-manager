@@ -21,8 +21,8 @@
 </template>
 
 <script setup lang="ts">
-import PendindgTasksCard from '@/features/tasks/components/PendindgTasksCard.vue';
-import ProjectCard from '../components/ProjectCard.vue';
+import PendindgTasksCard from '@/shared/components/PendindgTasksCard.vue';
+import ProjectCard from '@/shared/components/ProjectCard.vue';
 
 
 </script>
