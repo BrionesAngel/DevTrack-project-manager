@@ -1,7 +1,7 @@
 <template>
   <button @click="goBack()">
-    <div class="rounded-full p-2 bg-lime-50">
-      <CircleArrowLeftIcon class="text-lime-300"></CircleArrowLeftIcon>
+    <div class="rounded-full p-2 bg-indigo-200 transition-transform duration-300 hover:scale-110">
+      <CircleArrowLeftIcon class="size-8 text-indigo-600"></CircleArrowLeftIcon>
     </div>
   </button>
 </template>

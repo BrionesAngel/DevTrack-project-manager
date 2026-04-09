@@ -7,9 +7,9 @@ export const projectRoutes: RouteRecordRaw[] = [
     component: () => import('./views/ProjectsView.vue'),
   },
   {
-    path: '/projects',
-    name: 'projects',
-    component: () => import('./views/ProjectsView.vue'),
+    path: '/projects/create',
+    name: 'project-create',
+    component: () => import('./views/ProjectCreateView.vue'),
   },
 
 ]
