@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useLinks } from '@/composables/useLinks'
-import Sidebar from './Sidebar.vue';
+import Sidebar from './SideBar.vue';
 const { links } = useLinks()
 const open = ref(false)
 
