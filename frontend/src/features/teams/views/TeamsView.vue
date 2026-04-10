@@ -1,8 +1,8 @@
 <template>
   <div>
-    <ul class="w-full">
+    <ul class="w-full md:grid md:grid-cols-3">
       <li v-for="i in 5" :key="i">
-        <div class="m-12" @click="">
+        <div class="my-8 mx-2" @click="">
           <TeamsProjectsCard></TeamsProjectsCard>
         </div>
       </li>
