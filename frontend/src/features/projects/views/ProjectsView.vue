@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import ProjectCard from '../components/ProjectCard.vue';
+import ProjectCard from '@/shared/components/ProjectCard.vue';
 
 
 </script>
