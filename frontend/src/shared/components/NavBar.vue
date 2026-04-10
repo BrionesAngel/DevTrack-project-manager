@@ -2,8 +2,8 @@
   <header class="font-medium">
     <div class="flex flex-row bg-white shadow-md shadow-slate-500">
       <div class="flex flex-row">
-        <button @click="open = true" class="text-3xl p-2 md:hidden bg-emerald-100">☰</button>
-        <div class="flex flex-row gap-4 justify-start items-center text-green-300">
+        <button @click="open = true" class="text-3xl p-2 md:hidden bg-lime-300">☰</button>
+        <div class="flex flex-row gap-4 justify-start items-center">
           <img class=" h-14 " src="@/assets/devtrack_logo.png" />
         </div>
       </div>
@@ -16,7 +16,7 @@
           </div>
           <nav class="flex flex-col gap-4 pt-4">
             <RouterLink class="py-4 pl-2" v-for="link in links" :key="link.to" :to="link.to" @click="open = false"
-              active-class="border-l-8 border-teal-700 bg-emerald-100">{{
+              active-class="border-l-8 border-lime-300 bg-lime-50">{{
                 link.name }}
             </RouterLink>
           </nav>
@@ -25,8 +25,8 @@
 
       <!-- desktop -->
       <nav class="hidden md:flex flex-row">
-        <RouterLink class="py-3 px-10 hover:bg-emerald-100" v-for="link in links" :key="link.to" :to="link.to"
-          @click="open = false" active-class="bg-emerald-100 border-b-6 border-teal-900">
+        <RouterLink class="py-3 px-10 hover:bg-lime-50" v-for="link in links" :key="link.to" :to="link.to"
+          @click="open = false" active-class="bg-lime-50 border-b-6 border-lime-300">
           {{ link.name }}
         </RouterLink>
       </nav>

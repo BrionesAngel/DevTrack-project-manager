@@ -9,16 +9,16 @@
         <span class="font-medium text-white">members (5)</span>
       </button>
       <button
-        class="font-medium border-2 px-2 rounded-md border-green-800 bg-green-500 text-white hover:bg-green-700">add
+        class="font-medium border-2 px-2 rounded-md border-green-800 bg-green-500 text-white hover:bg-green-700 hover:border-green-400">add
         member</button>
     </div>
     <transition name="slide">
-      <div v-if="showMembers" class="border-t pt-3 mt-3">
-        <ul class="space-y-2 ">
-          <li v-for="i in 5" :key="i" class="flex justify-between border-b">
+      <div v-if="showMembers" class="border-t mt-3">
+        <ul>
+          <li v-for="i in 5" :key="i" class="flex justify-between items-center border-b p-1">
             name: name {{ i }}
             <button
-              class="font-medium border-2 px-2 rounded-md border-red-800 bg-red-500 text-white hover:bg-red-700">delete
+              class="flex items-center font-medium border-2 px-2 rounded-md border-red-800 bg-red-500 text-white hover:bg-red-700 hover:border-red-400">delete
               member</button>
           </li>
         </ul>
