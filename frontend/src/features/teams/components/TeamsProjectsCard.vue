@@ -10,9 +10,9 @@
         <span class="text-white">members (5)</span>
       </button>
       <button
-        class="flex flex-row justify-center items-center gap-2 border-2 px-2 rounded-md text-green-800 bg-green-400 hover:text-green-400 hover:bg-green-800">
+        class="flex flex-row justify-center items-center gap-2 border-2 px-2 rounded-md text-green-900 bg-green-400 hover:text-green-400 hover:bg-green-900">
         <user-plus-icon></user-plus-icon>
-        <span class="text-white">add member</span>
+        <span>add member</span>
       </button>
     </div>
     <transition name="slide">
@@ -21,9 +21,9 @@
           <li v-for="i in 5" :key="i" class="flex justify-between items-center border-b p-1">
             name: name {{ i }}
             <button
-              class="flex flex-row font-medium items-center border-2 px-2 gap-2 rounded-md bg-red-400 hover:bg-red-800 text-red-900 hover:text-red-400">
+              class="flex flex-row font-medium items-center border-2 px-2 gap-2 rounded-md bg-red-300 hover:bg-red-900 text-red-900 hover:text-red-300">
               <user-x-icon></user-x-icon>
-              <span class="text-white">delete member</span>
+              <span>delete member</span>
             </button>
           </li>
         </ul>
