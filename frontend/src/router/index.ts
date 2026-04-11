@@ -11,11 +11,6 @@ const router = createRouter({
       component: ProjectDashboardView,
     },
     {
-      path: '/projects',
-      name: 'projects',
-      component: () => import('@/features/projects/views/ProjectsView.vue'),
-    },
-    {
       path: '/teams',
       name: 'teams',
       component: () => import('@/features/teams/views/TeamsView.vue'),
