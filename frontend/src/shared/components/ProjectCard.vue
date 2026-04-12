@@ -1,15 +1,36 @@
 <template>
-  <div class="bg-zinc-100 p-4 rounded-md border-0.5 border-teal-800 shadow-sm shadow-teal-950 transition-transform duration-200
-      hover:scale-105
+  <div class="bg-zinc-100 p-4 rounded-md border-0.5 border-indigo-800 shadow-sm shadow-indigo-950
       hover:shadow-md
-      hover:shadow-teal-600
       hover:bg-white">
     <h3 class="text-2xl">name project</h3>
     <p>description project</p>
     <h2>70% |========| ===|</h2>
+    <div class="flex flex-8 justify-between items-center mt-4">
+      <div class="">
+        <button
+          class="flex flex-row justify-center items-center font-medium gap-2 p-1 border-2 px-4 rounded-md text-orange-900 bg-orange-300 hover:text-orange-300 hover:bg-orange-900">
+          <info-icon></info-icon>
+          <span class="">project details</span>
+        </button>
+      </div>
+      <div class="flex flex-row gap-4">
+        <button
+          class="flex flex-row justify-center items-center font-medium gap-2 p-1 border-2 px-2 rounded-md text-green-900 bg-green-400 hover:text-green-400 hover:bg-green-900">
+          <square-pen-icon></square-pen-icon>
+          <span class="">edit project</span>
+        </button>
+        <button
+          class="flex flex-row justify-center items-center font-medium gap-2 p-1 border-2 px-2 rounded-md text-red-900 bg-red-300 hover:text-red-300 hover:bg-red-900">
+          <trash2-icon></trash2-icon>
+          <span class="">delete project</span>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { InfoIcon, SquarePenIcon, Trash2Icon } from '@lucide/vue';
+
 
 </script>
