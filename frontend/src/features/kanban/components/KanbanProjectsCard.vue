@@ -9,7 +9,7 @@
         <arrow-down-narrow-wide-icon v-else></arrow-down-narrow-wide-icon>
         <span class="text-white">members (5)</span>
       </button>
-      <button
+      <button @click.stop()="onKanbanView"
         class="flex flex-row justify-center items-center gap-2 border-2 px-2 rounded-md text-green-900 bg-green-400 hover:text-green-400 hover:bg-green-900">
         <users-icon></users-icon>
         <span class="">all members kanban</span>
@@ -21,7 +21,7 @@
         <ul>
           <li v-for="i in 5" :key="i" class="flex justify-between items-center border-b p-1">
             name: name {{ i }}
-            <button
+            <button @click.stop="onKanbanView"
               class="flex flex-row font-medium items-center border-2 px-2 gap-2 rounded-md bg-yellow-400 hover:bg-yellow-900 text-yellow-900 hover:text-yellow-400">
               <user-round-icon></user-round-icon>
               <span>member kanban</span>
@@ -38,6 +38,11 @@
 <script setup lang="ts">
 import { ArrowDownNarrowWideIcon, ArrowUpNarrowWideIcon, SquareKanbanIcon, StickyNoteIcon, UserRoundIcon, UsersIcon, } from '@lucide/vue';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const showMembers = ref(false)
+function onKanbanView() {
+  router.push({ name: 'project-kanban-view' })
+}
 </script>

@@ -16,7 +16,7 @@
           </div>
           <nav class="flex flex-col gap-4 pt-4">
             <RouterLink class="py-4 pl-2" v-for="link in links" :key="link.to" :to="link.to" @click="open = false"
-              active-class="border-l-8 border-lime-300 bg-lime-50">{{
+              :class="{ 'bg-lime-50 border-b-6 border-lime-300': isActive(link.to) }">{{
                 link.name }}
             </RouterLink>
           </nav>
@@ -26,7 +26,7 @@
       <!-- desktop -->
       <nav class="hidden md:flex flex-row">
         <RouterLink class="py-3 px-10 hover:bg-lime-50" v-for="link in links" :key="link.to" :to="link.to"
-          @click="open = false" active-class="bg-lime-50 border-b-6 border-lime-300">
+          @click="open = false" :class="{ 'bg-lime-50 border-b-6 border-lime-300': isActive(link.to) }">
           {{ link.name }}
         </RouterLink>
       </nav>
@@ -38,9 +38,15 @@
 import { ref } from 'vue'
 import { useLinks } from '@/composables/useLinks'
 import Sidebar from './SideBar.vue';
+import { useRoute } from 'vue-router';
 const { links } = useLinks()
 const open = ref(false)
 
+const route = useRoute()
+const isActive = (to: string) => {
+  if (to === '/') return route.path === '/'
+  return route.path.startsWith(to)
+}
 </script>
 
 <style scoped></style>
