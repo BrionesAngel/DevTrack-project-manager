@@ -3,12 +3,12 @@
       hover:shadow-md
       hover:bg-white">
     <div class="flex items-center gap-2">
-      <div class="p-4 bg-blue-100 rounded-lg">
-        <CalendarClockIcon class="text-blue-600 size-8">
-        </CalendarClockIcon>
+      <div class="p-4 bg-orange-100 rounded-lg">
+        <CalendarX2Icon class="text-orange-500 size-8">
+        </CalendarX2Icon>
       </div>
       <div class="text-2xl">
-        <h3>in progress</h3>
+        <h3>rejected</h3>
         <h2>8</h2>
       </div>
     </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { CalendarClockIcon } from '@lucide/vue';
+import { CalendarX2Icon } from '@lucide/vue';
 
 
 
