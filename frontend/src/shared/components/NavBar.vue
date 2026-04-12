@@ -16,7 +16,7 @@
           </div>
           <nav class="flex flex-col gap-4 pt-4">
             <RouterLink class="py-4 pl-2" v-for="link in links" :key="link.to" :to="link.to" @click="open = false"
-              :class="{ 'bg-lime-50 border-b-6 border-lime-300': isActive(link.to) }">{{
+              :class="{ 'bg-lime-50 border-l-8 border-lime-300': isActive(link.to) }">{{
                 link.name }}
             </RouterLink>
           </nav>
