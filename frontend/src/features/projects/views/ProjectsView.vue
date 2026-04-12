@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="flex justify-between items-center mx-12 my-4">
+  <div class="min-h-screen pb-8">
+    <div class="flex justify-between items-center mx-12 my-8">
       <span class="text-4xl">Projects</span>
       <CreateProjectButton></CreateProjectButton>
     </div>
