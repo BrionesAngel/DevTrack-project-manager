@@ -1,11 +1,11 @@
 <template>
-  <div class="bg-zinc-100 p-4 rounded-md border-0.5 border-indigo-800 shadow-sm shadow-indigo-950
+  <div class="flex flex-col bg-zinc-100 p-4 rounded-md border-0.5 border-indigo-800 shadow-sm shadow-indigo-950
       hover:shadow-md
       hover:bg-white">
     <h3 class="text-2xl">name project</h3>
     <p>description project</p>
     <h2>70% |========| ===|</h2>
-    <div class="flex flex-8 justify-between items-center mt-4">
+    <div class="flex flex-wrap md:flex-nowrap gap-2 justify-between items-center mt-4 w-full">
       <div class="">
         <button
           class="flex flex-row justify-center items-center font-medium gap-2 p-1 border-2 px-4 rounded-md text-orange-900 bg-orange-300 hover:text-orange-300 hover:bg-orange-900">
@@ -13,7 +13,7 @@
           <span class="">project details</span>
         </button>
       </div>
-      <div class="flex flex-row gap-4">
+      <div class="flex flex-row justify-between items-center gap-9 md:gap-4">
         <button
           class="flex flex-row justify-center items-center font-medium gap-2 p-1 border-2 px-2 rounded-md text-green-900 bg-green-400 hover:text-green-400 hover:bg-green-900">
           <square-pen-icon></square-pen-icon>

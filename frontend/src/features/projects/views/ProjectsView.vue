@@ -1,12 +1,12 @@
 <template>
   <div class="min-h-screen pb-8">
-    <div class="flex justify-between items-center mx-12 my-8">
+    <div class="flex justify-between items-center mx-4 my-4">
       <span class="text-4xl">Projects</span>
       <CreateProjectButton></CreateProjectButton>
     </div>
     <ul class="w-full">
       <li v-for="i in 7" :key="i">
-        <div class="m-12">
+        <div class="m-4">
           <ProjectCard></ProjectCard>
         </div>
       </li>
