@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ProjectDashboardView from '@/features/projects/views/ProjectDashboardView.vue'
 import { projectRoutes } from '@/features/projects/router'
 import { kanbanRoutes } from '@/features/kanban/router'
+import { taskRoutes } from '@/features/tasks/router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,7 @@ const router = createRouter({
       component: () => import('@/features/docs/views/DocsView.vue'),
     },
     ...projectRoutes,
+    ...taskRoutes,
     ...kanbanRoutes,
   ],
 })

@@ -7,7 +7,7 @@
     <ul class="w-full">
       <li v-for="i in 7" :key="i">
         <div class="m-4">
-          <ProjectCard></ProjectCard>
+          <ProjectCard :with-tasks-shortcut="true" :project-id="i"></ProjectCard>
         </div>
       </li>
     </ul>

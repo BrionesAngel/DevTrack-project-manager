@@ -6,7 +6,12 @@
     <p>description project</p>
     <h2>70% |========| ===|</h2>
     <div class="flex flex-wrap md:flex-nowrap gap-2 justify-between items-center mt-4 w-full">
-      <div class="">
+      <div class="flex flex-wrap gap-2">
+        <button v-if="withTasksShortcut" @click="onTasks"
+          class="flex flex-row justify-center items-center font-medium gap-2 p-1 border-2 px-4 rounded-md text-emerald-900 bg-emerald-200 hover:text-emerald-200 hover:bg-emerald-900 cursor-pointer">
+          <sticky-note-icon></sticky-note-icon>
+          <span class="">view tasks</span>
+        </button>
         <button
           class="flex flex-row justify-center items-center font-medium gap-2 p-1 border-2 px-4 rounded-md text-orange-900 bg-orange-200 hover:text-orange-200 hover:bg-orange-900 cursor-pointer">
           <info-icon></info-icon>
@@ -30,7 +35,25 @@
 </template>
 
 <script setup lang="ts">
-import { InfoIcon, SquarePenIcon, Trash2Icon } from '@lucide/vue';
+import { InfoIcon, SquarePenIcon, StickyNoteIcon, Trash2Icon } from '@lucide/vue';
+import { useRouter } from 'vue-router';
 
+const props = withDefaults(defineProps<{
+  withTasksShortcut?: boolean
+  projectId?: string | number
+}>(), {
+  withTasksShortcut: false,
+})
+
+const router = useRouter()
+
+function onTasks() {
+  if (props.projectId !== undefined && props.projectId !== null) {
+    router.push({ name: 'tasks-by-project', params: { projectId: props.projectId } })
+    return
+  }
+
+  router.push({ name: 'tasks' })
+}
 
 </script>
