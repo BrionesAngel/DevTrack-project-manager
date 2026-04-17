@@ -16,7 +16,7 @@
       </div>
       <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:flex-row justify-center w-full">
         <li v-for="i in 5" :key="i">
-          <ProjectCard class="m-4"></ProjectCard>
+          <ProjectCard class="m-4" :with-tasks-shortcut="true" :project-id="i"></ProjectCard>
         </li>
       </ul>
     </div>

@@ -4,7 +4,7 @@
       <span class="text-4xl">Projects</span>
       <CreateProjectButton></CreateProjectButton>
     </div>
-    <ul class="w-full">
+    <ul class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       <li v-for="i in 7" :key="i">
         <div class="m-4">
           <ProjectCard :with-tasks-shortcut="true" :project-id="i"></ProjectCard>
