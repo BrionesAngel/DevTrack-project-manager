@@ -17,6 +17,7 @@
     "@lucide/vue": "^1.7.0",
     "@tailwindcss/vite": "^4.2.2",
     "@tanstack/vue-query": "^5.96.1",
+    "axios": "^1.16.0",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.2.2",
     "vue": "^3.5.31",
