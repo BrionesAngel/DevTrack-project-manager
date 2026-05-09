@@ -15,6 +15,7 @@ const router = createRouter({
       path: '/',
       name: 'home-dashboard',
       component: ProjectDashboardView,
+      meta: { requiresAuth: true }
     },
     ...authRoutes,
     ...projectRoutes,
@@ -32,7 +33,7 @@ router.beforeEach((to) => {
   }
 
   if ((to.name === 'login' || to.name === 'register') && authStore.isAuthenticated) {
-    return { name: 'home' }
+    return { name: 'home-dashboard' }
   }
 
   return true

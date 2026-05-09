@@ -75,7 +75,7 @@ async function onSubmit() {
       email: form.email,
       password: form.password
     })
-    await router.push({ name: 'home' })
+    await router.push({ name: 'home-dashboard' })
     form.username = ''
     form.email = ''
     form.password = ''

@@ -57,7 +57,7 @@ async function onSubmit() {
   try {
     if (!validate()) return
     await authStore.login(form)
-    await router.push({ name: 'home' })
+    await router.push({ name: 'home-dashboard' })
     form.email = ''
     form.password = ''
   } catch (err) {

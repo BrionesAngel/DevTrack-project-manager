@@ -20,6 +20,11 @@
                 link.name }}
             </RouterLink>
           </nav>
+          <button type="button"
+            class="rounded-lg border border-rose-300 px-6 py-3 text-sm font-medium text-rose-700 cursor-pointer hover:bg-rose-100"
+            @click="onLogout">
+            Logout
+          </button>
         </div>
       </Sidebar>
 
@@ -30,6 +35,12 @@
           {{ link.name }}
         </RouterLink>
       </nav>
+      <button type="button"
+        class="rounded-lg border border-rose-300 px-6 py-3 text-sm font-medium text-rose-700 cursor-pointer hover:bg-rose-100"
+        @click="onLogout">
+        Logout
+      </button>
+
     </div>
   </header>
 </template>
@@ -39,6 +50,11 @@ import { ref } from 'vue'
 import { useLinks } from '@/composables/useLinks'
 import Sidebar from './SideBar.vue';
 import { useRoute } from 'vue-router';
+import { useAuthStore } from '../../features/auth/stores/auth.store'
+const authStore = useAuthStore()
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
 const { links } = useLinks()
 const open = ref(false)
 
@@ -47,6 +63,13 @@ const isActive = (to: string) => {
   if (to === '/') return route.path === '/'
   return route.path.startsWith(to)
 }
+
+
+function onLogout() {
+  authStore.logout()
+  router.push({ name: 'login' })
+}
+
 </script>
 
 <style scoped></style>
