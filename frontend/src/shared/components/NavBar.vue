@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useLinks } from '@/composables/useLinks'
+import { useLinks } from '../composables/useLinks'
 import Sidebar from './SideBar.vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../../features/auth/stores/auth.store'
