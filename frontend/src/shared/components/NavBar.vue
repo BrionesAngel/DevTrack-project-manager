@@ -14,11 +14,7 @@
             </RouterLink>
           </nav>
         </div>
-        <button type="button" v-show="authStore.isAuthenticated"
-          class="hidden lg:block mr-2 rounded-lg border border-rose-300 px-6 py-3 text-sm font-medium text-rose-700 cursor-pointer hover:bg-rose-100"
-          @click="onLogout">
-          Logout
-        </button>
+        <ProfilePopoverMenu v-show="authStore.isAuthenticated" class="mr-4"></ProfilePopoverMenu>
       </div>
 
       <!-- mobile -->
@@ -33,12 +29,6 @@
               </RouterLink>
             </nav>
           </div>
-          <button type="button" v-show="authStore.isAuthenticated"
-            class="rounded-lg border border-rose-300 px-6 py-3 text-sm font-medium text-rose-700 cursor-pointer hover:bg-rose-100 mt-8"
-            @click="onLogout">
-            Logout
-          </button>
-
         </div>
       </Sidebar>
     </div>
@@ -52,6 +42,7 @@ import Sidebar from './SideBar.vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../../features/auth/stores/auth.store'
 import { useRouter } from 'vue-router'
+import ProfilePopoverMenu from './ProfilePopoverMenu.vue';
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -62,11 +53,6 @@ const route = useRoute()
 const isActive = (to: string) => {
   if (to === '/') return route.path === '/'
   return route.path.startsWith(to)
-}
-
-function onLogout() {
-  authStore.logout()
-  router.push({ name: 'login' })
 }
 
 </script>
