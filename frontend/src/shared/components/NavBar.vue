@@ -8,23 +8,23 @@
           <img class="h-16 w-auto object-contain" src="@/assets/devtrack_logo.png" />
           <!-- desktop -->
           <nav class="hidden lg:flex flex-row" v-show="authStore.isAuthenticated">
-            <RouterLink class="py-5 px-10 hover:bg-lime-50" v-for="link in links" :key="link.to" :to="link.to"
-              @click="open = false" :class="{ 'bg-lime-50 border-b-6 border-lime-300': isActive(link.to) }">
+            <RouterLink class="py-3 px-10 hover:bg-slate-300 hover:rounded-4xl" v-for="link in links" :key="link.to" :to="link.to"
+              @click="open = false" :class="{ 'bg-slate-300 rounded-4xl': isActive(link.to) }">
               {{ link.name }}
             </RouterLink>
           </nav>
         </div>
-        <ProfilePopoverMenu v-show="authStore.isAuthenticated" class="mr-4"></ProfilePopoverMenu>
+        <ProfilePopoverMenu v-show="authStore.isAuthenticated" class="flex items-center mr-4"></ProfilePopoverMenu>
       </div>
 
       <!-- mobile -->
       <Sidebar :open="open" @close="open = false">
         <div class="lg:hidden flex flex-col justify-between">
-          <div class="flex flex-col gap-4 p-1 justify-center items-start">
+          <div class="flex flex-col gap-4 justify-center items-start">
             <img class="h-16 w-auto object-contain" src="@/assets/devtrack_logo.png" />
-            <nav class="flex flex-col gap-4 pt-4">
+            <nav class="flex flex-col gap-4 pt-4 w-full">
               <RouterLink class="py-4 pl-2" v-for="link in links" :key="link.to" :to="link.to" @click="open = false"
-                :class="{ 'bg-lime-50 border-l-8 border-lime-300': isActive(link.to) }">{{
+                :class="{ 'bg-slate-300 border-l-8 border-lime-300': isActive(link.to) }">{{
                   link.name }}
               </RouterLink>
             </nav>
