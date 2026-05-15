@@ -7,6 +7,7 @@ import { kanbanRoutes } from '@/features/kanban/router'
 import { taskRoutes } from '@/features/tasks/router'
 import { docsRoutes } from '@/features/docs/router'
 import { teamsRoutes } from '@/features/teams/router'
+import { userRoutes } from '@/features/users/router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,7 @@ const router = createRouter({
     ...kanbanRoutes,
     ...teamsRoutes,
     ...docsRoutes,
+    ...userRoutes,
   ],
 })
 

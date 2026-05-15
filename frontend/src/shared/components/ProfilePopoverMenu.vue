@@ -6,14 +6,18 @@
 
     <div v-show="isOpen" ref="popover" class="absolute right-0 top-full mt-4 w-48 z-50 bg-white border
         border-gray-200 rounded-xl shadow-lg flex flex-col p-4 gap-2 justify-around items-center text-lg">
-      <div class="flex items-center hover:bg-gray-100 w-full p-2 px-2 gap-2 rounded-lg cursor-pointer">
+      <RouterLink :to="{ name: 'user-profile' }"
+        class="flex items-center hover:bg-gray-100 w-full p-2 px-2 gap-2 rounded-lg cursor-pointer"
+        @click="closeMenu">
         <UserIcon></UserIcon>
-        <RouterLink to="">Profile</RouterLink>
-      </div>
-      <div class="flex items-center hover:bg-gray-100 w-full p-2 px-2 gap-2 rounded-lg cursor-pointer">
+        <span>Profile</span>
+      </RouterLink>
+      <RouterLink :to="{ name: 'user-settings' }"
+        class="flex items-center hover:bg-gray-100 w-full p-2 px-2 gap-2 rounded-lg cursor-pointer"
+        @click="closeMenu">
         <SettingsIcon></SettingsIcon>
-        <RouterLink to="">Settings</RouterLink>
-      </div>
+        <span>Settings</span>
+      </RouterLink>
       <button type="button" @click="onLogout"
         class="flex items-center hover:bg-gray-100 w-full p-2 px-2 gap-2 rounded-lg cursor-pointer">
         <LogOutIcon></LogOutIcon>

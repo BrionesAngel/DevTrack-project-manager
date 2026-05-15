@@ -4,6 +4,11 @@ const errorMessages: Record<string, string> = {
   DUPLICATE_EMAIL: 'Email already in use',
   ACCESS_DENIED: 'Unauthorized',
 
+  // Users
+  USERNAME_ALREADY_EXISTS: 'Username already in use',
+  INVALID_CURRENT_PASSWORD: 'Current password is incorrect',
+  PASSWORD_MISMATCH: 'New passwords do not match',
+
   // General
   USER_NOT_FOUND: 'User not found',
   RESOURCE_NOT_FOUND: 'Resource not found',
