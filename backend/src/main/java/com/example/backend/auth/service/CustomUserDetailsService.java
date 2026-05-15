@@ -1,7 +1,7 @@
 package com.example.backend.auth.service;
 
 import lombok.RequiredArgsConstructor;
-import com.example.backend.users.exceptions.UserNotFoundException;
+import com.example.backend.shared.exceptions.ResourceNotFoundException;
 import com.example.backend.users.User;
 import com.example.backend.users.UserRepository;
 import org.jspecify.annotations.NonNull;
@@ -15,10 +15,10 @@ public class CustomUserDetailsService implements UserDetailsService {
   private final UserRepository userRepository;
 
   @Override
-  public @NonNull UserDetails loadUserByUsername(@NonNull String email) throws UserNotFoundException {
+  public @NonNull UserDetails loadUserByUsername(@NonNull String email) throws ResourceNotFoundException {
     User user = userRepository.findByEmail(email);
     if (user == null) {
-      throw new UserNotFoundException("Incorrect Email");
+      throw new ResourceNotFoundException("User not found");
     }
 
     return new org.springframework.security.core.userdetails.User(
