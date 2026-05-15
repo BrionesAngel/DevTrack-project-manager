@@ -7,6 +7,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,6 +39,12 @@ public class AuthExceptionHandler extends BaseExceptionHandler {
     return buildError(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS");
   }
 
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
+    log.warn("Access Denied: {}", ex.getMessage());
+    return buildError(HttpStatus.FORBIDDEN, "FORBIDDEN");
+  }
+
   @ExceptionHandler(AuthenticationException.class)
   public ResponseEntity<ErrorResponse> handleAuthentication(AuthenticationException ex) {
     log.warn("Authentication Exception: {}", ex.getMessage());
@@ -46,7 +53,7 @@ public class AuthExceptionHandler extends BaseExceptionHandler {
 
   @ExceptionHandler(InvalidRefreshTokenException.class)
   public ResponseEntity<ErrorResponse> handleInvalidRefreshToken(InvalidRefreshTokenException ex) {
-    log.warn("Invalid refresh token"); 
+    log.warn("Invalid refresh token: {}", ex.getMessage());
     return buildError(HttpStatus.UNAUTHORIZED, "INVALID_REFRESH_TOKEN");
   }
 
