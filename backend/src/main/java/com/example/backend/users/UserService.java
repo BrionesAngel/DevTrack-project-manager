@@ -48,17 +48,6 @@ public class UserService {
     return user;
   }
 
-  public UserProfileResponse getUserProfile(Long id, String email) {
-    User user = userRepository.findByEmail(email);
-    if(user == null)
-      throw new ResourceNotFoundException("User not found");
-
-    if (!user.getId().equals(id))
-      throw new ResourceNotFoundException("Profile does not belong to authenticated user");
-
-      return new UserProfileResponse(user.getId(), user.getUsername(), user.getEmail());
-  }
-
   public UserProfileResponse getMyProfile(String email) {
     User user = userRepository.findByEmail(email);
     if (user == null) {

@@ -3,7 +3,6 @@ package com.example.backend.users;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +21,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
   private final UserService userService;
-
-  @GetMapping("/{id}")
-  public UserProfileResponse getUserProfile(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
-    return userService.getUserProfile(id, userDetails.getUsername());
-  }
 
   @GetMapping("/profile")
   public UserProfileResponse getMyProfile(@AuthenticationPrincipal UserDetails userDetails) {
