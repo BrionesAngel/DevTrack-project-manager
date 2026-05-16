@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -16,10 +17,13 @@ public class TeamMember {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @ManyToOne
+
+  @ManyToOne(fetch = FetchType.LAZY)
   private User user;
-  @ManyToOne
+
+  @ManyToOne(fetch = FetchType.LAZY)
   private Team team;
+
   @Enumerated(EnumType.STRING)
   private TeamRole role;
 }

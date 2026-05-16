@@ -2,13 +2,15 @@ package com.example.backend.tasks;
 
 import java.time.LocalDate;
 
+import com.example.backend.projects.Project;
 import com.example.backend.teammembers.TeamMember;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -19,11 +21,19 @@ public class Task {
   private Long id;
   private String title;
   private String description;
+
   @Enumerated(EnumType.STRING)
   private TaskPriority TaskPriority;
+
   @Enumerated(EnumType.STRING)
   private TaskStatus taskStatus;
+
   private LocalDate dueDate;
-  @ManyToOne
+
+  @ManyToOne(fetch = FetchType.LAZY)
   private TeamMember assignedTo;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn( name = "project_id")
+  private Project project;
 }

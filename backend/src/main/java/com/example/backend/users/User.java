@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.backend.auth.security.RefreshToken;
+import com.example.backend.projects.Project;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -24,7 +23,12 @@ public class User {
   private String username;
   private String password;
   private String email;
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @Builder.Default
   private List<RefreshToken> refreshTokens = new ArrayList<>();
+
+  @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Builder.Default
+  List<Project> projects = new ArrayList<>();
 }
