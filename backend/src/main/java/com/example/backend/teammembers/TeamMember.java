@@ -12,16 +12,18 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "teammembers")
+@Table(name = "team_members")
 public class TeamMember {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
   private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "team_id")
   private Team team;
 
   @Enumerated(EnumType.STRING)

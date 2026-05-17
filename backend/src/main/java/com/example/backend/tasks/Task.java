@@ -3,7 +3,8 @@ package com.example.backend.tasks;
 import java.time.LocalDate;
 
 import com.example.backend.projects.Project;
-import com.example.backend.teammembers.TeamMember;
+import com.example.backend.teams.Team;
+import com.example.backend.users.User;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,9 +32,12 @@ public class Task {
   private LocalDate dueDate;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  private TeamMember assignedTo;
+  private User assignedTo;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn( name = "project_id")
   private Project project;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Team team;
+
 }
