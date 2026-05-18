@@ -5,6 +5,7 @@ import com.example.backend.users.User;
 import com.example.backend.users.UserService;
 import com.example.backend.users.UserRepository;
 import com.example.backend.auth.security.JwtService;
+import com.example.backend.shared.exceptions.ResourceNotFoundException;
 import com.example.backend.auth.dto.AuthResponse;
 import com.example.backend.auth.dto.RegisterRequest;
 import com.example.backend.auth.dto.LoginRequest;
@@ -30,7 +31,8 @@ public class AuthService {
             request.email(),
             request.password()));
 
-    User user = userRepository.findByEmail(request.email());
+    User user = userRepository.findByEmail(request.email())
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
     String accessToken = jwtService.generateAccessToken(user.getEmail());
     String refreshToken = refreshTokenService.generateAndSaveRefreshToken(user.getId());
