@@ -26,12 +26,6 @@ public class GlobalExceptionHandler extends BaseExceptionHandler {
     return buildError(HttpStatus.NOT_FOUND, "RESOURCE_NOT_FOUND");
   }
 
-  @ExceptionHandler(AccessDeniedException.class)
-  public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
-    log.warn("Access Denied: {}", ex.getMessage());
-    return buildError(HttpStatus.UNAUTHORIZED, "ACCESS_DENIED");
-  }
-
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
     Map<String, String> errors = new HashMap<>();
@@ -39,6 +33,12 @@ public class GlobalExceptionHandler extends BaseExceptionHandler {
 
     return ResponseEntity.badRequest().body(
         new ErrorResponse("VALIDATION_ERROR", 400, errors, LocalDateTime.now()));
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
+    log.warn("Access Denied: {}", ex.getMessage());
+    return buildError(HttpStatus.FORBIDDEN, "FORBIDDEN");
   }
 
   @ExceptionHandler(Exception.class)
