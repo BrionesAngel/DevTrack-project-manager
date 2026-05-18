@@ -9,10 +9,7 @@ import com.example.backend.users.DTOs.UpdateUsernameRequest;
 import com.example.backend.users.exceptions.InvalidCurrentPasswordException;
 import com.example.backend.users.exceptions.PasswordMismatchException;
 import com.example.backend.users.exceptions.UsernameAlreadyExistsException;
-import com.example.backend.shared.exceptions.ResourceNotFoundException;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,33 +33,11 @@ public class UserService {
     return userRepository.save(user);
   }
 
-  public User getUser() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    assert auth != null;
-    String email = auth.getName();
-
-    User user = userRepository.findByEmail(email);
-    if (user == null) {
-      throw new ResourceNotFoundException("User not found");
-    }
-    return user;
-  }
-
-  public UserProfileResponse getMyProfile(String email) {
-    User user = userRepository.findByEmail(email);
-    if (user == null) {
-      throw new ResourceNotFoundException("User not found");
-    }
-
+  public UserProfileResponse getMyProfile(User user) {
     return new UserProfileResponse(user.getId(), user.getUsername(), user.getEmail());
   }
 
-  public UserProfileResponse updateMyUsername(String email, UpdateUsernameRequest request) {
-    User user = userRepository.findByEmail(email);
-    if (user == null) {
-      throw new ResourceNotFoundException("User not found");
-    }
-
+  public UserProfileResponse updateMyUsername(User user, UpdateUsernameRequest request) {
     String nextUsername = request.username().trim();
     if (!nextUsername.equals(user.getUsername()) && userRepository.existsByUsername(nextUsername)) {
       throw new UsernameAlreadyExistsException("Username already exists");
@@ -74,12 +49,7 @@ public class UserService {
     return new UserProfileResponse(user.getId(), user.getUsername(), user.getEmail());
   }
 
-  public void changeMyPassword(String email, ChangePasswordRequest request) {
-    User user = userRepository.findByEmail(email);
-    if (user == null) {
-      throw new ResourceNotFoundException("User not found");
-    }
-
+  public void changeMyPassword(User user, ChangePasswordRequest request) {
     if (!request.newPassword().equals(request.confirmNewPassword())) {
       throw new PasswordMismatchException("Passwords do not match");
     }
