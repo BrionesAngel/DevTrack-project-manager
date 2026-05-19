@@ -3,6 +3,7 @@ package com.example.backend.projects;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.backend.projectmember.ProjectMember;
 import com.example.backend.tasks.Task;
 import com.example.backend.teams.Team;
 import com.example.backend.users.User;
@@ -36,4 +37,8 @@ public class Project {
   @Builder.Default
   private List<Team> teams = new ArrayList<>();
 
+  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Builder.Default
+  private List<ProjectMember> members =  new ArrayList<>();
+  
 }
