@@ -36,4 +36,8 @@ public class ProjectAuthorizationService {
       throw new AccessDeniedException("not project admin");
     }
   }
+
+  public void validateMember(Long userId, Long projectId) {
+    getProjectMember(userId, projectId);
+  }
 }
