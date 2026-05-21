@@ -15,9 +15,6 @@ import com.example.backend.auth.security.CustomUserDetails;
 import com.example.backend.projects.DTOs.ProjectCreateRequest;
 import com.example.backend.projects.DTOs.ProjectCreateResponse;
 import com.example.backend.projects.DTOs.ProjectResponse;
-import com.example.backend.teams.TeamService;
-import com.example.backend.teams.DTOs.TeamCreateRequest;
-import com.example.backend.teams.DTOs.TeamCreateResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 
 public class ProjectController {
   private final ProjectService projectService;
-  private final TeamService teamService;
 
   @GetMapping("/{id}")
   public ProjectResponse getProject(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id) {
@@ -49,12 +45,5 @@ public class ProjectController {
       @AuthenticationPrincipal CustomUserDetails userDetails,
       @PathVariable Long id) {
     projectService.deleteProject(userDetails.getId(), id);
-  }
-
-  @PostMapping("/{id}/teams")
-  @ResponseStatus(HttpStatus.CREATED)
-  public TeamCreateResponse createTeamOnProject(@AuthenticationPrincipal CustomUserDetails userDetails,
-      @RequestBody TeamCreateRequest request, @PathVariable Long id) {
-    return teamService.createTeam(userDetails.getUser(), request, id);
   }
 }

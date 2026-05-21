@@ -24,20 +24,20 @@ public class Task {
   private String description;
 
   @Enumerated(EnumType.STRING)
-  private TaskPriority TaskPriority;
+  private TaskPriority priority;
 
   @Enumerated(EnumType.STRING)
-  private TaskStatus taskStatus;
+  private TaskStatus status;
 
   private LocalDate dueDate;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  private User assignedTo;
+  private User assignedUser;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Team assignedTeam;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Project project;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Team team;
 
 }
