@@ -49,6 +49,10 @@ public class AuthService {
     return new AuthResponse(accessToken, refreshToken);
   }
 
+  public void logout(String username, String refreshToken) {
+    refreshTokenService.revokeToken(username, refreshToken);
+  }
+
   public AuthResponse refresh(RefreshTokenRequest request) {
     User user = refreshTokenService.validateAndGetUser(request.refreshToken());
     String newAccessToken = jwtService.generateAccessToken(user.getEmail());

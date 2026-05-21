@@ -62,4 +62,19 @@ public class RefreshTokenService {
     new SecureRandom().nextBytes(randomBytes);
     return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
   }
+
+  @Transactional
+  public void revokeToken(String username, String refreshTokenValue) {
+    User user = userRepository.findByEmail(username)
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+    RefreshToken refreshToken = refreshTokenRepository
+        .findActiveTokensByUser(user, LocalDateTime.now())
+        .stream()
+        .filter(rt -> BCrypt.checkpw(refreshTokenValue, rt.getTokenHash()))
+        .findFirst()
+        .orElseThrow(() -> new InvalidRefreshTokenException("Invalid refresh token"));
+
+    refreshToken.setRevoked(true);
+  }
 }
