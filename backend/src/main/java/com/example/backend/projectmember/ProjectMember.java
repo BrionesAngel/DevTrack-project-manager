@@ -12,7 +12,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "project_member")
+@Table(name = "project_member", uniqueConstraints = {
+  @UniqueConstraint(columnNames = {"user_id", "project_id"})
+})
 public class ProjectMember {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
