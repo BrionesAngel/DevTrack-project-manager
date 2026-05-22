@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { authService } from '../services/auth.service'
-import type { LoginRequest, RegisterRequest } from '../dtos/auth.dtos.ts'
+import type { LoginRequest, LogoutRequest, RegisterRequest } from '../dtos/auth.dtos.ts'
 
 const ACCESS_TOKEN_KEY = 'accessToken'
 const REFRESH_TOKEN_KEY = 'refreshToken'
@@ -19,10 +19,10 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => Boolean(accessToken.value))
 
-  async function login(credentials: LoginRequest) {
+  async function login(payload: LoginRequest) {
     isLoading.value = true
     try {
-      const { data } = await authService.login(credentials)
+      const data = await authService.login(payload)
       accessToken.value = data.accessToken
       refreshToken.value = data.refreshToken
       localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken)
@@ -32,10 +32,10 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function register(credentials: RegisterRequest) {
+  async function register(payload: RegisterRequest) {
     isLoading.value = true
     try {
-      const { data } = await authService.register(credentials)
+      const data = await authService.register(payload)
       accessToken.value = data.accessToken
       refreshToken.value = data.refreshToken
       localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken)
@@ -45,11 +45,17 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  function logout() {
-    accessToken.value = null
-    refreshToken.value = null
-    localStorage.removeItem(ACCESS_TOKEN_KEY)
-    localStorage.removeItem(REFRESH_TOKEN_KEY)
+  async function logout(payload: LogoutRequest) {
+    isLoading.value = true
+    try {
+      await authService.logout(payload)
+      accessToken.value = null
+      refreshToken.value = null
+      localStorage.removeItem(ACCESS_TOKEN_KEY)
+      localStorage.removeItem(REFRESH_TOKEN_KEY)
+    } finally{
+      isLoading.value = false
+    }
   }
 
   return {

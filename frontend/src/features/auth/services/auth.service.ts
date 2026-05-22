@@ -1,14 +1,21 @@
-import { publicApi } from '@/api/axios'
-import type { LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterRequest, RegisterResponse } from '../dtos/auth.dtos.ts'
+import { privateApi, publicApi } from '@/api/axios'
+import type { LoginRequest, LoginResponse, LogoutRequest, RefreshRequest, RefreshResponse, RegisterRequest, RegisterResponse } from '../dtos/auth.dtos.ts'
 
 export const authService = {
-  login(payload: LoginRequest) {
-    return publicApi.post<LoginResponse>('/auth/login', payload)
+  async login(payload: LoginRequest) {
+    const { data } = await publicApi.post<LoginResponse>('/auth/login', payload)
+    return data
   },
-  register(payload: RegisterRequest) {
-    return publicApi.post<RegisterResponse>('/auth/register', payload)
+  async register(payload: RegisterRequest) {
+    const { data } = await publicApi.post<RegisterResponse>('/auth/register', payload)
+    return data
   },
-  refresh(payload: RefreshRequest) {
-    return publicApi.post<RefreshResponse>('/auth/refresh', payload)
+  async refresh(payload: RefreshRequest) {
+    const { data } = await publicApi.post<RefreshResponse>('/auth/refresh', payload)
+    return data
+  },
+  async logout(payload: LogoutRequest) {
+    const { data } = await privateApi.post<void>('/auth/logout', payload)
+    return data
   }
 }

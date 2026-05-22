@@ -40,8 +40,8 @@ const authStore = useAuthStore();
 const isOpen = ref(false);
 const target = ref<HTMLElement | null>(null);
 
-function onLogout() {
-  authStore.logout();
+async function onLogout() {
+  await authStore.logout({refreshToken: authStore.refreshToken!});
   router.push({ name: 'login' });
 }
 
