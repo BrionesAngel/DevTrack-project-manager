@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/vue-query";
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { usersService } from "./users.services";
+import { usersService } from "../services/users.services";
 import type { ChangePasswordRequest, UpdateUsernameRequest } from "../dtos/users.dtos";
 
 export function useUserProfileQuery(){

@@ -134,8 +134,8 @@
 import { computed, reactive, ref } from 'vue'
 import { FilePenLineIcon, KeyRoundIcon } from '@lucide/vue'
 import { HttpError } from '@/api/axios'
-import { useUserProfileQuery } from '../services/users.querys'
-import { useChangePasswordMutation, useUpdateUsernameMutation } from '../services/users.querys'
+import { useUserProfileQuery } from '../queries/users.querys'
+import { useChangePasswordMutation, useUpdateUsernameMutation } from '../queries/users.querys'
 
 const { data, isLoading, isError, error } = useUserProfileQuery()
 const usernameMutation = useUpdateUsernameMutation()
