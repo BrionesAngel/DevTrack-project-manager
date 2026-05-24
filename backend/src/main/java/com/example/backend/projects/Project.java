@@ -22,7 +22,9 @@ public class Project {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @Column(columnDefinition = "TEXT")
   private String title;
+  @Column(columnDefinition = "TEXT")
   private String description;
 
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)

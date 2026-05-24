@@ -9,6 +9,7 @@ import com.example.backend.projectmember.ProjectRole;
 import com.example.backend.projectmember.DTOs.ProjectMemberOverview;
 import com.example.backend.projects.DTOs.ProjectCreateRequest;
 import com.example.backend.projects.DTOs.ProjectCreateResponse;
+import com.example.backend.projects.DTOs.ProjectOverviewResponse;
 import com.example.backend.projects.DTOs.ProjectResponse;
 import com.example.backend.shared.exceptions.ResourceNotFoundException;
 import com.example.backend.teammembers.DTOs.TeamMemberOverview;
@@ -23,16 +24,26 @@ public class ProjectService {
   private final ProjectRepository projectRepository;
   private final ProjectAuthorizationService projectAuthorizationService;
 
-  public Project getProjectIfUserHasPermission(Long userId, Long projectId) {
-    return projectRepository.findProjectIfUserHasPermission(projectId, userId)
-        .orElseThrow(
-            () -> new ResourceNotFoundException("user " + userId + " has no permission on project " + projectId));
+  public List<ProjectOverviewResponse> getAllProjects(Long userId) {
+    List<Project> projects = projectRepository.findAllByMemberId(userId);
+
+    return projects.stream()
+        .map(this::toProjectOverviewResponse)
+        .toList();
   }
 
-  public ProjectResponse getProjectIfUserIsMember(Long userId, Long projectId) {
-    Project project = projectRepository.findByIdAndMemberId(projectId, userId)
-        .orElseThrow(() -> new ResourceNotFoundException("user " + userId + " has no permission on project " + projectId));
+  private ProjectOverviewResponse toProjectOverviewResponse(Project project){
+    return new ProjectOverviewResponse(
+      project.getId(),
+      project.getTitle(),
+      project.getDescription(),
+      project.getCreatedBy().getUsername(),
+      project.getTeams().size(),
+      project.getMembers().size()
+    );
+  }
 
+  private ProjectResponse toProjectResponse(Project project) {
     List<TeamOverview> teams = project.getTeams().stream()
         .map(t -> {
           List<TeamMemberOverview> members = t.getMembers().stream()
@@ -53,6 +64,20 @@ public class ProjectService {
         project.getCreatedBy().getUsername(),
         teams,
         members);
+
+  }
+
+  public Project getProjectIfUserHasPermission(Long userId, Long projectId) {
+    return projectRepository.findProjectIfUserHasPermission(projectId, userId)
+        .orElseThrow(
+            () -> new ResourceNotFoundException("user " + userId + " has no permission on project " + projectId));
+  }
+
+  public ProjectResponse getProjectIfUserIsMember(Long userId, Long projectId) {
+    Project project = projectRepository.findByIdAndMemberId(projectId, userId)
+        .orElseThrow(
+            () -> new ResourceNotFoundException("user " + userId + " has no permission on project " + projectId));
+    return toProjectResponse(project);
   }
 
   public ProjectCreateResponse createProject(User user, ProjectCreateRequest request) {

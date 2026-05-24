@@ -1,5 +1,7 @@
 package com.example.backend.projects;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.backend.auth.security.CustomUserDetails;
 import com.example.backend.projects.DTOs.ProjectCreateRequest;
 import com.example.backend.projects.DTOs.ProjectCreateResponse;
+import com.example.backend.projects.DTOs.ProjectOverviewResponse;
 import com.example.backend.projects.DTOs.ProjectResponse;
 
 import jakarta.validation.Valid;
@@ -29,6 +32,11 @@ public class ProjectController {
   @GetMapping("/{id}")
   public ProjectResponse getProject(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id) {
     return projectService.getProjectIfUserIsMember(userDetails.getUser().getId(), id);
+  }
+
+  @GetMapping
+  public List<ProjectOverviewResponse> getAllProjects(@AuthenticationPrincipal CustomUserDetails userDetails){
+    return projectService.getAllProjects(userDetails.getUser().getId());
   }
 
   @PostMapping
