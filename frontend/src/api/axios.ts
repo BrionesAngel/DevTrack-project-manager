@@ -2,10 +2,13 @@ import axios from 'axios'
 
 export class HttpError extends Error {
   status: number
-  constructor(message: string, status: number) {
+  data?: any
+
+  constructor(message: string, status: number, data?: any) {
     super(message)
     this.name = 'HttpError'
     this.status = status
+    this.data = data
   }
 }
 
@@ -71,7 +74,13 @@ const handleError = (error: any) => {
   const status = error.response.status
   const code = error.response.data?.message ?? `Request failed with status ${status}`
   const message = getFriendlyMessage(code)
-  return Promise.reject(new HttpError(message, status))
+  return Promise.reject(
+    new HttpError(
+      message,
+      status,
+      error.response.data
+    )
+  )
 }
 
 publicApi.interceptors.response.use(res => res, handleError)
