@@ -15,7 +15,6 @@ export const authService = {
     return data
   },
   async logout(payload: LogoutRequest) {
-    const { data } = await privateApi.post<void>('/auth/logout', payload)
-    return data
+    await privateApi.post<void>('/auth/logout', payload)
   }
 }

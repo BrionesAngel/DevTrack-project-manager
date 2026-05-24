@@ -2,7 +2,7 @@
   <section class="flex mx-auto h-full w-full items-center justify-center px-4" style="min-height: calc(100vh - 64px)">
     <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-lg mb-16">
       <h1 class="text-2xl font-bold text-slate-900">Register</h1>
-      <p class="mt-1 text-sm text-slate-600">Sign up to manage your app.</p>
+      <p class="mt-1 text-sm text-slate-600">Sign up to manage your Projects.</p>
 
       <form class="mt-6 space-y-4" @submit.prevent="onSubmit">
         <div>

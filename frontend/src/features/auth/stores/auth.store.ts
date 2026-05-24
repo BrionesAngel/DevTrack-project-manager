@@ -2,6 +2,7 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { authService } from '../services/auth.service'
 import type { LoginRequest, LogoutRequest, RegisterRequest } from '../dtos/auth.dtos.ts'
+import { queryClient } from '@/main.ts'
 
 const ACCESS_TOKEN_KEY = 'accessToken'
 const REFRESH_TOKEN_KEY = 'refreshToken'
@@ -56,6 +57,7 @@ export const useAuthStore = defineStore('auth', () => {
     } finally{
       isLoading.value = false
     }
+    queryClient.clear()
   }
 
   return {
