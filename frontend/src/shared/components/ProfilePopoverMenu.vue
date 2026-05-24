@@ -1,7 +1,7 @@
 <template>
   <div ref="target" class="relative">
-    <button @click="openMenu" class="cursor-pointer rounded-4xl p-6 bg-amber-200">
-      <img src="" alt="">
+    <button @click="openMenu" class="cursor-pointer rounded-4xl bg-lime-200">
+      <CircleUserIcon class="size-10"></CircleUserIcon>
     </button>
 
     <div v-show="isOpen" ref="popover" class="absolute right-0 top-full mt-4 w-48 z-50 bg-white border
@@ -32,7 +32,7 @@ import { useAuthStore } from '@/features/auth/stores/auth.store';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { onClickOutside } from '@vueuse/core';
-import { LogOutIcon, SettingsIcon, UserIcon } from '@lucide/vue';
+import { CircleUserIcon, LogOutIcon, SettingsIcon, UserIcon } from '@lucide/vue';
 
 
 const router = useRouter();

@@ -1,11 +1,11 @@
 <template>
-  <div class="min-h-screen pb-8">
+  <div class="flex flex-1 flex-col pb-8">
     <div class="mx-4 my-4">
       <span class="text-4xl">Teams</span>
     </div>
-    <ul class="w-full md:grid md:grid-cols-2 lg:grid-cols-3">
-      <li v-for="i in 5" :key="i">
-        <div class="m-4" @click="">
+    <ul class="w-full grid grid-cols-1 md:grid-cols-2">
+      <li v-for="project in data" :key="project.id">
+        <div class="m-4">
           <TeamsProjectsCard></TeamsProjectsCard>
         </div>
       </li>

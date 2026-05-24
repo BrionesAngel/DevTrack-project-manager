@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen pb-8">
+  <div class="flex-1 pb-8">
     <div class="flex justify-between items-center mx-4 my-4">
       <span class="text-4xl">Tasks</span>
       <CreateTaskButton></CreateTaskButton>
