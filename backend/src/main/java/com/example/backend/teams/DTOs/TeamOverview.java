@@ -1,11 +1,7 @@
 package com.example.backend.teams.DTOs;
 
-import java.util.List;
-
-import com.example.backend.teammembers.DTOs.TeamMemberOverview;
-
 public record TeamOverview(
-  Long teamId,
+  Long id,
   String name,
-  List<TeamMemberOverview> members
+  int members
 ) {}
