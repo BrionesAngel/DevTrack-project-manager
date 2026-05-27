@@ -21,11 +21,18 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
 
   public User createUser(RegisterRequest request) {
+    String nextUsername = request.username().trim();
+
     if (userRepository.existsByEmail(request.email())) {
       throw new DuplicateEmailException("Email already exists");
     }
+
+    if (userRepository.existsByUsername(nextUsername)) {
+      throw new UsernameAlreadyExistsException("Username already exists");
+    }
+
     User user = User.builder()
-        .username(request.username())
+        .username(nextUsername)
         .password(passwordEncoder.encode(request.password()))
         .email(request.email())
         .build();

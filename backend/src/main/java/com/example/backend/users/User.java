@@ -14,7 +14,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"username"}),
+    @UniqueConstraint(columnNames = {"email"})
+})
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

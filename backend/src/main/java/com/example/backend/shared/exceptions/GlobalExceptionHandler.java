@@ -38,7 +38,11 @@ public class GlobalExceptionHandler extends BaseExceptionHandler {
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
     log.warn("Access Denied: {}", ex.getMessage());
-    return buildError(HttpStatus.FORBIDDEN, "FORBIDDEN");
+    String msg = ex.getMessage();
+    if (msg == null || msg.isBlank()) {
+      msg = "FORBIDDEN";
+    }
+    return buildError(HttpStatus.FORBIDDEN, msg);
   }
 
   @ExceptionHandler(Exception.class)
