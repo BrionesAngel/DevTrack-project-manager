@@ -12,6 +12,8 @@ public record TaskCreateRequest(
   @NotBlank String description,
   TaskPriority priority,
   LocalDate dueDate,
+  String githubIssueUrl,
+  String comment,
   Long assignedUser,
   @NotNull Long teamId
 ) {}

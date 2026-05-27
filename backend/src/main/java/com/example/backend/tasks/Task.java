@@ -1,6 +1,8 @@
 package com.example.backend.tasks;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.backend.projects.Project;
 import com.example.backend.teams.Team;
@@ -31,6 +33,8 @@ public class Task {
 
   private LocalDate dueDate;
 
+  private String githubIssueUrl;
+
   @ManyToOne(fetch = FetchType.LAZY)
   private User assignedUser;
 
@@ -39,5 +43,8 @@ public class Task {
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Project project;
+
+  @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TaskComment> comments = new ArrayList<>();
 
 }
