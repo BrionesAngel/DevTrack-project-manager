@@ -8,6 +8,12 @@ export const projectRoutes: RouteRecordRaw[] = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/projects/:projectId',
+    name: 'project-details',
+    component: () => import('./views/ProjectDetailsView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/projects/create',
     name: 'project-create',
     component: () => import('./views/ProjectCreateView.vue'),
