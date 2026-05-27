@@ -20,7 +20,8 @@
 
       <div class="flex justify-end items-center">
         <button
-          class="flex font-medium gap-2 p-1 border-2 px-4 rounded-md text-orange-800 bg-orange-200 hover:text-orange-200 hover:bg-orange-900 cursor-pointer">
+          @click="onProjectDetails"
+          class="flex font-medium gap-2 p-1 border-2 px-4 rounded-md text-orange-900 bg-orange-200 hover:text-orange-200 hover:bg-orange-900 cursor-pointer">
           <info-icon></info-icon>
           <span class="font-medium">project details</span>
         </button>
@@ -30,24 +31,19 @@
 </template>
 
 <script setup lang="ts">
-import type { ProjectResponse } from '@/features/projects/DTOs/project.dtos';
-import { InfoIcon, SquarePenIcon, StickyNoteIcon, Trash2Icon } from '@lucide/vue';
+import type { ProjectOverviewResponse } from '@/features/projects/DTOs/project.dtos';
+import { InfoIcon } from '@lucide/vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{
-  project: ProjectResponse
+  project: ProjectOverviewResponse
   withTasksShortcut?: boolean
 }>()
 
 const router = useRouter()
 
-function onTasks() {
-  if (props.project.id !== undefined && props.project.id !== null) {
-    router.push({ name: 'tasks-by-project', params: { projectId: props.project.id } })
-    return
-  }
-
-  router.push({ name: 'tasks' })
+function onProjectDetails() {
+  router.push({ name: 'project-details', params: { projectId: props.project.id } })
 }
 
 </script>

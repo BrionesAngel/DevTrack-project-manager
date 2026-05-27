@@ -7,14 +7,17 @@
         <div class="flex flex-row gap-4 justify-start items-center">
           <img class="h-16 w-auto object-contain" src="@/assets/devtrack_logo.png" />
           <!-- desktop -->
-          <nav class="hidden lg:flex flex-row" v-show="authStore.isAuthenticated">
+          <nav class="hidden lg:flex flex-row" v-if="authStore.isAuthenticated">
             <RouterLink class="py-3 px-10 hover:bg-slate-300 hover:rounded-4xl" v-for="link in links" :key="link.to" :to="link.to"
               @click="open = false" :class="{ 'bg-slate-300 rounded-4xl': isActive(link.to) }">
               {{ link.name }}
             </RouterLink>
           </nav>
         </div>
-        <ProfilePopoverMenu v-show="authStore.isAuthenticated" class="flex items-center mr-4"></ProfilePopoverMenu>
+        <div v-if="authStore.isAuthenticated" class="mr-4 flex items-center gap-3">
+          <NotificationPopoverMenu />
+          <ProfilePopoverMenu class="flex items-center" />
+        </div>
       </div>
 
       <!-- mobile -->
@@ -41,11 +44,10 @@ import { useLinks } from '../composables/useLinks'
 import Sidebar from './SideBar.vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../../features/auth/stores/auth.store'
-import { useRouter } from 'vue-router'
 import ProfilePopoverMenu from './ProfilePopoverMenu.vue';
+import NotificationPopoverMenu from './NotificationPopoverMenu.vue';
 
 const authStore = useAuthStore()
-const router = useRouter()
 const { links } = useLinks()
 const open = ref(false)
 const route = useRoute()

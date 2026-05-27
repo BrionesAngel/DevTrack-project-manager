@@ -8,9 +8,9 @@
 
 <script setup lang="ts">
 import { CircleArrowLeftIcon } from '@lucide/vue';
-import { useRouter } from 'vue-router';
+import { useRouter, type RouteLocationRaw } from 'vue-router';
 const props = defineProps<{
-  fallback: string
+  fallback: string | RouteLocationRaw
 }>()
 const router = useRouter()
 
@@ -18,7 +18,7 @@ function goBack() {
   if (window.history.length > 1) {
     router.back()
   } else {
-    router.push({ name: props.fallback })
+    router.push(props.fallback)
   }
 }
 </script>

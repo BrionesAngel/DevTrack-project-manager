@@ -1,5 +1,5 @@
 <template>
-  <div class="flex bg-zinc-100 p-4 m-4 rounded-md border-0.5 border-indigo-800 shadow-sm shadow-indigo-950
+  <div class="flex bg-zinc-100 p-4 mx-2 my-1 rounded-md border-0.5 border-indigo-800 shadow-sm shadow-indigo-950
       hover:shadow-md
       hover:bg-white">
     <div class="flex items-center gap-2">

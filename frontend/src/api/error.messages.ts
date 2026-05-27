@@ -12,10 +12,13 @@ const errorMessages: Record<string, string> = {
   // General
   USER_NOT_FOUND: 'User not found',
   RESOURCE_NOT_FOUND: 'Resource not found',
+  FORBIDDEN: 'You do not have permission to perform this action',
   VALIDATION_ERROR: 'Check your input and try again',
   INTERNAL_SERVER_ERROR: 'Something went wrong',
 }
 
 export function getFriendlyMessage(code: string): string {
-  return errorMessages[code] ?? 'An unexpected error occurred'
+  // If we have a mapped friendly message, return it. Otherwise return the server message
+  // (often a human-readable explanation) so users see clearer errors.
+  return errorMessages[code] ?? code ?? 'An unexpected error occurred'
 }

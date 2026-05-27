@@ -7,6 +7,7 @@ import { kanbanRoutes } from '@/features/kanban/router'
 import { taskRoutes } from '@/features/tasks/router'
 import { docsRoutes } from '@/features/docs/router'
 import { teamsRoutes } from '@/features/teams/router'
+import { notificationRoutes } from '@/features/notifications/router'
 import { userRoutes } from '@/features/users/router'
 
 const router = createRouter({
@@ -23,6 +24,7 @@ const router = createRouter({
     ...taskRoutes,
     ...kanbanRoutes,
     ...teamsRoutes,
+    ...notificationRoutes,
     ...docsRoutes,
     ...userRoutes,
   ],
