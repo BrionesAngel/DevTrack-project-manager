@@ -25,4 +25,10 @@ export const taskRoutes: RouteRecordRaw[] = [
     component: () => import('./views/TaskCreateView.vue'),
     meta: { requiresAuth: true }
   },
+  {
+    path: '/tasks/project/:projectId/:taskId',
+    name: 'task-details',
+    component: () => import('./views/TaskDetailsView.vue'),
+    meta: { requiresAuth: true }
+  },
 ]

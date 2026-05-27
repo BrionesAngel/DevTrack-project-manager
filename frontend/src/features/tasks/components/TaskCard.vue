@@ -1,7 +1,18 @@
 <template>
-  <div class="border rounded-md p-2 bg-zinc-200 hover:bg-white transition">
-    <span class="text-xs text-gray-400">#42</span>
-    <p class="text-sm truncate mb-2">short description</p>
+  <div @click="$emit('open', task)" class="cursor-pointer rounded-md border border-slate-200 bg-white p-2.5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <div class="flex items-center justify-between gap-2">
+      <span v-if="task" class="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
+        {{ task.status }}
+      </span>
+    </div>
+
+    <p class="mt-2 text-sm font-semibold leading-snug text-slate-800 line-clamp-2">
+      {{ task?.title ?? 'short description' }}
+    </p>
+
+    <p v-if="task?.assignedUsername" class="mt-2 text-xs text-slate-500">
+      {{ task.assignedUsername }}
+    </p>
 
     <div v-if="showActions" class="flex gap-2 justify-end">
       <button
@@ -22,10 +33,17 @@
 
 <script setup lang="ts">
 import { SquarePenIcon, Trash2Icon } from '@lucide/vue';
+import type { TaskResponse } from '../DTOs/task.dtos'
+
+const emit = defineEmits<{
+  (e: 'open', task?: TaskResponse | null): void
+}>()
 
 withDefaults(defineProps<{
+  task?: TaskResponse | null
   showActions?: boolean
 }>(), {
   showActions: false,
 })
 </script>
+

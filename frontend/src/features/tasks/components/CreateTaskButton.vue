@@ -1,8 +1,8 @@
 <template>
-  <div class="p-2 pd-2 rounded-lg bg-emerald-600 shadow-sm hover:bg-emerald-800 hover:shadow-md shadow-emerald-950">
-    <button @click="onCreateTask" class="flex flex-row justify-center items-center gap-2 cursor-pointer">
-      <FilePlus2Icon class="size-6 text-white"></FilePlus2Icon>
-      <h2 class="text-lg font-medium text-white">Create Task</h2>
+  <div class="flex justify-center items-center">
+    <button @click="onCreateTask" class="flex items-center gap-2 rounded-md border-2 px-4 py-1 text-cyan-900 bg-cyan-300 hover:text-cyan-300 hover:bg-cyan-900 cursor-pointer">
+      <FilePlus2Icon class="size-5 shrink-0" />
+      <span class="text-lg font-medium">Create Task</span>
     </button>
   </div>
 </template>
