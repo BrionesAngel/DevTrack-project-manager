@@ -64,7 +64,8 @@ public class SecurityConfig {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowedOrigins(List.of(
         "http://localhost:3000",
-        "https://dev-track-project-manager.vercel.app"
+        "https://dev-track-project-manager.vercel.app",
+        "https://dev-track-project-manager-3rbe3b04m.vercel.app"
     ));
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
     config.setAllowedHeaders(List.of("*"));
