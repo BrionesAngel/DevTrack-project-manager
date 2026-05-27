@@ -8,6 +8,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import com.example.backend.projectmember.ProjectMember;
+import com.example.backend.projectmember.ProjectMemberRepository;
 import com.example.backend.projectmember.ProjectRole;
 import com.example.backend.projects.ProjectAuthorizationService;
 import com.example.backend.projects.Project;
@@ -39,6 +40,7 @@ public class TaskService {
   private final ProjectAuthorizationService projectAuthorizationService;
   private final TeamService teamService;
   private final TeamMemberService teamMemberService;
+  private final ProjectMemberRepository projectMemberRepository;
   private final TeamMemberRepository teamMemberRepository;
   private final TaskCommentRepository taskCommentRepository;
   private final UserRepository userRepository;
@@ -99,9 +101,21 @@ public class TaskService {
   public TaskOverviewResponse updateTaskAssignee(Long actorUserId, Long projectId, Long taskId, TaskAssignUserRequest request) {
     User actor = getActor(actorUserId);
     Task task = getTaskInProject(taskId, projectId);
-    validateCanReassign(actorUserId, projectId, task);
+    User assignedUser;
+    if (task.getAssignedTeam() == null) {
+      projectAuthorizationService.validateMember(actorUserId, projectId);
+      if (!request.assignedUserId().equals(actorUserId)) {
+        projectAuthorizationService.validateAdmin(actorUserId, projectId);
+      }
 
-    User assignedUser = teamMemberService.getUserIfIsTeamMember(request.assignedUserId(), task.getAssignedTeam().getId());
+      ProjectMember projectMember = projectMemberRepository.findByUserIdAndProjectId(request.assignedUserId(), projectId)
+          .orElseThrow(() -> new AccessDeniedException("Assigned user must be a project member"));
+      assignedUser = projectMember.getUser();
+    } else {
+      validateCanReassign(actorUserId, projectId, task);
+      assignedUser = teamMemberService.getUserIfIsTeamMember(request.assignedUserId(), task.getAssignedTeam().getId());
+    }
+
     task.setAssignedUser(assignedUser);
 
     if (task.getStatus() == TaskStatus.UNASSIGNED) {
@@ -144,7 +158,15 @@ public class TaskService {
     }
 
     if (request.assignedUserId() != null) {
-      User assignedUser = teamMemberService.getUserIfIsTeamMember(request.assignedUserId(), task.getAssignedTeam().getId());
+      User assignedUser;
+      if (task.getAssignedTeam() == null) {
+        projectAuthorizationService.validateAdmin(actorUserId, projectId);
+        ProjectMember projectMember = projectMemberRepository.findByUserIdAndProjectId(request.assignedUserId(), projectId)
+            .orElseThrow(() -> new AccessDeniedException("Assigned user must be a project member"));
+        assignedUser = projectMember.getUser();
+      } else {
+        assignedUser = teamMemberService.getUserIfIsTeamMember(request.assignedUserId(), task.getAssignedTeam().getId());
+      }
       task.setAssignedUser(assignedUser);
       if (task.getStatus() == TaskStatus.UNASSIGNED) {
         task.setStatus(TaskStatus.ASSIGNED);
@@ -155,7 +177,7 @@ public class TaskService {
     }
 
     if (request.status() != null) {
-      validateStatusTransition(actorUserId, task, request.status());
+      validateStatusTransition(actorUserId, projectId, task, request.status());
       task.setStatus(request.status());
     }
 
@@ -201,6 +223,9 @@ public class TaskService {
   }
 
   private TaskOverviewResponse toOverview(Task task) {
+    Long assignedTeamId = task.getAssignedTeam() != null ? task.getAssignedTeam().getId() : null;
+    String assignedTeamName = task.getAssignedTeam() != null ? task.getAssignedTeam().getName() : null;
+
     return new TaskOverviewResponse(
         task.getId(),
         task.getTitle(),
@@ -210,8 +235,8 @@ public class TaskService {
         task.getDueDate(),
         task.getAssignedUser() != null ? task.getAssignedUser().getId() : null,
         task.getAssignedUser() != null ? task.getAssignedUser().getUsername() : null,
-        task.getAssignedTeam().getId(),
-        task.getAssignedTeam().getName(),
+        assignedTeamId,
+        assignedTeamName,
         task.getProject().getId(),
         task.getGithubIssueUrl());
   }
@@ -231,9 +256,38 @@ public class TaskService {
         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
   }
 
-  private void validateStatusTransition(Long actorUserId, Task task, TaskStatus newStatus) {
+  private void validateStatusTransition(Long actorUserId, Long projectId, Task task, TaskStatus newStatus) {
     TaskStatus currentStatus = task.getStatus();
     boolean isAssignee = task.getAssignedUser() != null && task.getAssignedUser().getId().equals(actorUserId);
+
+    if (task.getAssignedTeam() == null) {
+      ProjectMember actorMember = projectAuthorizationService.getProjectMember(actorUserId, projectId);
+      boolean isProjectAdmin = actorMember.getRole() == ProjectRole.OWNER || actorMember.getRole() == ProjectRole.ADMIN;
+
+      if ((currentStatus == TaskStatus.ASSIGNED || currentStatus == TaskStatus.REJECTED) && newStatus == TaskStatus.IN_PROGRESS) {
+        if (!isAssignee) {
+          throw new AccessDeniedException("Only assigned member can take this task");
+        }
+        return;
+      }
+
+      if (currentStatus == TaskStatus.IN_PROGRESS && newStatus == TaskStatus.REVIEW) {
+        if (!isAssignee) {
+          throw new AccessDeniedException("Only assigned member can request review");
+        }
+        return;
+      }
+
+      if (currentStatus == TaskStatus.REVIEW && (newStatus == TaskStatus.COMPLETED || newStatus == TaskStatus.REJECTED)) {
+        if (!isProjectAdmin) {
+          throw new AccessDeniedException("Only project owner or admin can review task without team");
+        }
+        return;
+      }
+
+      throw new AccessDeniedException("Invalid status transition");
+    }
+
     TeamMember teamMember = teamMemberRepository.findByUserIdAndTeamId(actorUserId, task.getAssignedTeam().getId())
         .orElse(null);
     boolean isLead = teamMember != null && teamMember.getRole() == TeamRole.LEAD;
@@ -296,6 +350,11 @@ public class TaskService {
   }
 
   private void validateCanReassign(Long actorUserId, Long projectId, Task task) {
+    if (task.getAssignedTeam() == null) {
+      projectAuthorizationService.validateAdmin(actorUserId, projectId);
+      return;
+    }
+
     ProjectMember actorMember = projectAuthorizationService.getProjectMember(actorUserId, projectId);
     if (actorMember.getRole() == ProjectRole.OWNER || actorMember.getRole() == ProjectRole.ADMIN) {
       return;

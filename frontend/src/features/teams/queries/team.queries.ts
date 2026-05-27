@@ -32,6 +32,7 @@ export function useDeleteTeamMutation() {
       await queryClient.invalidateQueries({ queryKey: ['projects'] },)
       await queryClient.invalidateQueries({ queryKey: ['projects', 'teams'] })
       await queryClient.invalidateQueries({ queryKey: ['project'] })
+      await queryClient.invalidateQueries({ queryKey: ['tasks'] })
     }
   })
 }

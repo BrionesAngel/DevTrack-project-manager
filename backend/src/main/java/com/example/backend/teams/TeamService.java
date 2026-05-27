@@ -22,6 +22,7 @@ import com.example.backend.teams.DTOs.TeamCreateRequest;
 import com.example.backend.teams.DTOs.TeamCreateResponse;
 import com.example.backend.teams.DTOs.TeamDetailsResponse;
 import com.example.backend.teammembers.DTOs.UpdateTeamMemberRoleRequest;
+import com.example.backend.tasks.TaskRepository;
 import com.example.backend.users.User;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class TeamService {
   private final ProjectAuthorizationService projectAuthorizationService;
   private final TeamMemberRepository teamMemberRepository;
   private final ProjectMemberRepository projectMemberRepository;
+  private final TaskRepository taskRepository;
 
   public Team getTeamInProject(Long teamId, Long projectId) {
     return teamRepository.findByIdAndProjectId(teamId, projectId)
@@ -41,9 +43,11 @@ public class TeamService {
             () -> new ResourceNotFoundException("team " + teamId + " has not been found on project " + projectId));
   }
 
+  @Transactional
   public void deleteTeam(Long userId, Long projectId, Long teamId) {
     projectAuthorizationService.validateAdmin(userId, projectId);
     Team team = this.getTeamInProject(teamId, projectId);
+    taskRepository.clearAssignedTeamByTeamId(team.getId());
     teamRepository.delete(team);
   }
 

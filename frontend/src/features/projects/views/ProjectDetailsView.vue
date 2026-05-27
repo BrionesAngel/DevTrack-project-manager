@@ -37,28 +37,6 @@
                   resource-type="PROJECT"
                   :resource-id="data.id" />
 
-                <AlertDialog v-if="canDeleteProject">
-                  <AlertDialogTrigger as-child>
-                    <button
-                      class="flex flex-row items-center gap-2 rounded-md border-2 bg-red-300 px-4 py-1 text-lg font-medium text-red-900 transition hover:bg-red-900 hover:text-red-200 cursor-pointer">
-                      <Trash2Icon class="size-5" />
-                      <span>delete project</span>
-                    </button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogDescription class="text-lg">
-                        This action cannot be undone. The project and all its data will be permanently removed.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction @click="onDeleteProject()">
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
               </template>
             </div>
 
@@ -154,10 +132,8 @@ import { computed, reactive, watchEffect } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserProfileQuery } from '@/features/users/queries/users.querys'
 import { useQueryClient } from '@tanstack/vue-query'
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from '@/components/ui/alert-dialog'
-import { InfoIcon, Trash2Icon } from '@lucide/vue'
+import { InfoIcon } from '@lucide/vue'
 import { useDeleteTeamMutation } from '@/features/teams/queries/team.queries'
-import { useDeleteProjectMutation } from '../queries/project.queries'
 import { toast } from 'vue-sonner'
 import { useUpdateProjectMemberRoleMutation } from '../queries/project.queries'
 import type { ProjectRole, ProjectResponse } from '../DTOs/project.dtos'
@@ -169,14 +145,12 @@ const projectId = computed(() => Number(route.params.projectId))
 const { data, isLoading, isError, error } = useGetProjectQuery(projectId.value)
 const { data: profile } = useUserProfileQuery()
 const deleteTeamMutation = useDeleteTeamMutation()
-const deleteProjectMutation = useDeleteProjectMutation()
 const roleMutation = useUpdateProjectMemberRoleMutation()
 const queryClient = useQueryClient()
 
 const currentUserId = computed(() => profile.value?.id)
 const currentProjectMember = computed(() => data.value?.members.find(member => member.userId === currentUserId.value))
 const canManageProject = computed(() => currentProjectMember.value?.role === 'OWNER' || currentProjectMember.value?.role === 'ADMIN')
-const canDeleteProject = computed(() => currentProjectMember.value?.role === 'OWNER')
 const canAssignRoles = computed(() => currentProjectMember.value?.role === 'OWNER')
 const canViewTeams = computed(() => !!currentProjectMember.value)
 const isRoleMutationPending = computed(() => roleMutation.isPending.value)
@@ -215,18 +189,6 @@ function onDeleteTeam(teamId: number) {
 
 function onTeamDetails(teamId: number) {
   router.push({ name: 'team-details', params: { projectId: projectId.value, teamId } })
-}
-
-function onDeleteProject() {
-  if (deleteProjectMutation.isPending.value) return
-
-  deleteProjectMutation.mutate(projectId.value, {
-    onSuccess: () => {
-      toast.success('Project deleted successfully')
-      router.push({ name: 'projects' })
-    },
-    onError: (err) => toast.error(err instanceof Error ? err.message : 'Failed to delete project')
-  })
 }
 
 async function updateMemberRole(userId: number) {

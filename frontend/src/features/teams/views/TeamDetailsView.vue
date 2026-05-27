@@ -103,7 +103,7 @@
 
       <div class="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
         <div class="flex items-center justify-between gap-4">
-          <h2 class="text-xl font-black text-slate-800">Team tasks</h2>
+          <h2 class="text-xl font-black text-slate-800">Unassigned team tasks</h2>
           <div class="flex items-center gap-2">
             <span class="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-600">{{ teamTasks?.length ?? 0 }}</span>
             <button

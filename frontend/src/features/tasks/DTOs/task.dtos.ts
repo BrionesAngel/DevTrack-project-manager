@@ -22,8 +22,8 @@ export interface TaskResponse {
   dueDate: string | null
   assignedUserId: number | null
   assignedUsername: string | null
-  assignedTeamId: number
-  assignedTeamName: string
+  assignedTeamId: number | null
+  assignedTeamName: string | null
   projectId: number
   githubIssueUrl?: string | null
 }

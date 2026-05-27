@@ -152,12 +152,14 @@ import { useUpdateTaskMutation, useUpdateTaskAssigneeMutation } from '@/features
 import { toast } from 'vue-sonner'
 import type { TaskResponse, TaskUpdateRequest } from '../DTOs/task.dtos'
 import { loadKanbanContext } from '@/features/kanban/composables/kanbanContext'
+import type { ProjectMemberOverview } from '@/features/projects/DTOs/project.dtos'
 
 const route = useRoute()
 const router = useRouter()
 const projectId = computed(() => Number(route.params.projectId))
 const taskId = computed(() => Number(route.params.taskId))
 const teamId = computed(() => Number(route.query.teamId))
+const hasTeamId = computed(() => Number.isFinite(teamId.value) && teamId.value > 0)
 const resolvedTeamId = computed(() => Number.isFinite(teamId.value) && teamId.value > 0 ? teamId.value : 0)
 const hasProjectId = computed(() => Number.isFinite(projectId.value) && projectId.value > 0)
 
@@ -168,8 +170,10 @@ const { data: projectData } = useGetProjectQuery(projectId.value)
 
 const task = computed<TaskResponse | undefined>(() => tasks.value?.find(t => t.id === taskId.value))
 
-const currentTeamMember = computed(() => teamData.value?.members.find(member => member.userId === profile.value?.id))
+const currentProjectMember = computed(() => projectData.value?.members.find((member: ProjectMemberOverview) => member.userId === profile.value?.id))
+const currentTeamMember = computed(() => hasTeamId.value ? teamData.value?.members.find(member => member.userId === profile.value?.id) : undefined)
 const isTeamLead = computed(() => currentTeamMember.value?.role === 'LEAD')
+const canReviewWithoutTeam = computed(() => currentProjectMember.value?.role === 'OWNER' || currentProjectMember.value?.role === 'ADMIN')
 
 const mutation = useUpdateTaskMutation()
 const assigneeMutation = useUpdateTaskAssigneeMutation()
@@ -187,8 +191,8 @@ const isLeader = computed(() => isTeamLead.value)
 
 const canTake = computed(() => isAssignee.value && (task.value?.status === 'ASSIGNED' || task.value?.status === 'REJECTED'))
 const canFinish = computed(() => isAssignee.value && task.value?.status === 'IN_PROGRESS')
-const canAccept = computed(() => isLeader.value && task.value?.status === 'REVIEW')
-const canReject = computed(() => isLeader.value && task.value?.status === 'REVIEW')
+const canAccept = computed(() => (hasTeamId.value ? isLeader.value : canReviewWithoutTeam.value) && task.value?.status === 'REVIEW')
+const canReject = computed(() => (hasTeamId.value ? isLeader.value : canReviewWithoutTeam.value) && task.value?.status === 'REVIEW')
 const canRetake = computed(() => isAssignee.value && task.value?.status === 'REJECTED')
 
 const backLink = computed(() => {

@@ -77,6 +77,7 @@ import CreateProjectButton from '../components/CreateProjectButton.vue'
 import { projectService } from '../services/project.service'
 import { taskService } from '@/features/tasks/services/task.service'
 import type { TaskResponse } from '@/features/tasks/DTOs/task.dtos'
+import { useUserProfileQuery } from '@/features/users/queries/users.querys'
 
 type DashboardTaskCard = {
   label: string
@@ -86,8 +87,11 @@ type DashboardTaskCard = {
   badgeClass: string
 }
 
+const { data: profile } = useUserProfileQuery()
+const currentUserId = computed(() => profile.value?.id ?? 0)
+
 const dashboardQuery = useQuery({
-  queryKey: ['dashboard', 'summary'],
+  queryKey: computed(() => ['dashboard', 'summary', currentUserId.value]),
   queryFn: async () => {
     const projects = await projectService.getAllProjects()
     const recentProjects = projects.slice(-3).reverse()
@@ -95,14 +99,20 @@ const dashboardQuery = useQuery({
     const recentProjectTasks = await Promise.all(
       recentProjects.map(async (project) => ({
         projectId: project.id,
-        tasks: await taskService.getProjectTasks(project.id),
+        tasks: await taskService.getProjectTasks(project.id, {
+          assignedUserId: currentUserId.value || undefined,
+        }),
       }))
     )
+
+    const userTasks = recentProjectTasks
+      .flatMap(entry => entry.tasks)
+      .filter(task => !currentUserId.value || task.assignedUserId === currentUserId.value)
 
     return {
       projects,
       recentProjects,
-      recentTasks: recentProjectTasks.flatMap(entry => entry.tasks),
+      recentTasks: userTasks,
     }
   },
   staleTime: 1000 * 60 * 5,

@@ -167,14 +167,19 @@ const columns = computed(() => [
 
 function openTask(task: TaskResponse | null | undefined) {
   if (!task) return
+  const query: Record<string, string> = {
+    projectId: String(task.projectId),
+    kanbanView: 'global',
+  }
+
+  if (task.assignedTeamId != null) {
+    query.teamId = String(task.assignedTeamId)
+  }
+
   router.push({
     name: 'task-details',
     params: { projectId: task.projectId, taskId: task.id },
-    query: {
-      projectId: String(task.projectId),
-      teamId: String(task.assignedTeamId),
-      kanbanView: 'global',
-    },
+    query,
   })
 }
 </script>
