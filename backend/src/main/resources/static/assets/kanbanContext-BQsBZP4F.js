@@ -1,1 +1,0 @@
-const e="last-kanban-context";function r(){if(typeof window>"u")return null;const n=window.localStorage.getItem(e);if(!n)return null;try{const t=JSON.parse(n);return!Number.isFinite(t.projectId)||t.projectId<=0?null:t}catch{return null}}function o(n){typeof window>"u"||window.localStorage.setItem(e,JSON.stringify(n))}export{r as l,o as s};
