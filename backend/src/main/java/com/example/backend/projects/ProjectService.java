@@ -1,15 +1,20 @@
 package com.example.backend.projects;
 
 import java.util.List;
+import java.util.Comparator;
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.example.backend.projectmember.ProjectMember;
+import com.example.backend.projectmember.ProjectMemberRepository;
 import com.example.backend.projectmember.ProjectRole;
 import com.example.backend.projectmember.DTOs.ProjectMemberOverview;
 import com.example.backend.projects.DTOs.ProjectCreateRequest;
 import com.example.backend.projects.DTOs.ProjectCreateResponse;
 import com.example.backend.projects.DTOs.ProjectOverviewResponse;
+import com.example.backend.projects.DTOs.ProjectOverviewTeamsResponse;
 import com.example.backend.projects.DTOs.ProjectResponse;
 import com.example.backend.shared.exceptions.ResourceNotFoundException;
 import com.example.backend.teammembers.DTOs.TeamMemberOverview;
@@ -22,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProjectService {
   private final ProjectRepository projectRepository;
+  private final ProjectMemberRepository projectMemberRepository;
   private final ProjectAuthorizationService projectAuthorizationService;
 
   public List<ProjectOverviewResponse> getAllProjects(Long userId) {
@@ -32,15 +38,30 @@ public class ProjectService {
         .toList();
   }
 
-  private ProjectOverviewResponse toProjectOverviewResponse(Project project){
+  public List<ProjectOverviewTeamsResponse> getAllProjectsWithTeams(Long userId) {
+    List<Project> projects = projectRepository.findAllByMemberId(userId);
+
+    return projects.stream()
+        .map(project -> new ProjectOverviewTeamsResponse(
+            project.getId(),
+            project.getTitle(),
+            project.getCreatedBy().getUsername(),
+            project.getTeams().stream()
+                .map(team -> new TeamOverview(
+                    team.getId(),
+                    team.getName(),
+                    team.getMembers().size()))
+                .toList()))
+        .toList();
+  }
+
+  private ProjectOverviewResponse toProjectOverviewResponse(Project project) {
     return new ProjectOverviewResponse(
-      project.getId(),
-      project.getTitle(),
-      project.getDescription(),
-      project.getCreatedBy().getUsername(),
-      project.getTeams().size(),
-      project.getMembers().size()
-    );
+        project.getId(),
+        project.getTitle(),
+        project.getCreatedBy().getUsername(),
+        project.getTeams().size(),
+        project.getMembers().size());
   }
 
   private ProjectResponse toProjectResponse(Project project) {
@@ -49,11 +70,12 @@ public class ProjectService {
           List<TeamMemberOverview> members = t.getMembers().stream()
               .map(m -> new TeamMemberOverview(m.getUser().getId(), m.getUser().getUsername(), m.getRole()))
               .toList();
-          return new TeamOverview(t.getId(), t.getName(), members);
+          return new TeamOverview(t.getId(), t.getName(), members.size());
         })
         .toList();
 
     List<ProjectMemberOverview> members = project.getMembers().stream()
+      .sorted(Comparator.comparing(ProjectMember::getId))
         .map(m -> new ProjectMemberOverview(m.getUser().getId(), m.getUser().getUsername(), m.getRole()))
         .toList();
 
@@ -108,5 +130,34 @@ public class ProjectService {
     projectAuthorizationService.validateOwner(userId, project.getId());
 
     projectRepository.delete(project);
+  }
+
+  @Transactional
+  public ProjectMemberOverview updateProjectMemberRole(Long actorUserId, Long projectId, Long targetUserId, ProjectRole role) {
+    projectAuthorizationService.validateOwner(actorUserId, projectId);
+
+    ProjectMember targetMember = projectMemberRepository.findByUserIdAndProjectId(targetUserId, projectId)
+        .orElseThrow(() -> new ResourceNotFoundException("Project member not found"));
+
+    if (targetMember.getRole() == ProjectRole.OWNER && role != ProjectRole.OWNER) {
+      long ownerCount = projectMemberRepository.countByProjectIdAndRole(projectId, ProjectRole.OWNER);
+      if (ownerCount <= 1) {
+        throw new AccessDeniedException("Cannot remove the last project owner");
+      }
+    }
+
+    if (role == ProjectRole.OWNER) {
+      projectMemberRepository.findAllByProjectIdAndRole(projectId, ProjectRole.OWNER).stream()
+          .filter(member -> !member.getUser().getId().equals(targetUserId))
+          .forEach(member -> member.setRole(ProjectRole.ADMIN));
+    }
+
+    targetMember.setRole(role);
+    projectMemberRepository.save(targetMember);
+
+    return new ProjectMemberOverview(
+        targetMember.getUser().getId(),
+        targetMember.getUser().getUsername(),
+        targetMember.getRole());
   }
 }
