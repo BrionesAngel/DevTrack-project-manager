@@ -73,6 +73,7 @@ CREATE TABLE notifications (
     status        VARCHAR(255) NOT NULL DEFAULT 'PENDING',
     created_at    TIMESTAMP
 );
+CREATE SEQUENCE notifications_seq INCREMENT BY 50 START WITH 1;
 
 CREATE INDEX idx_notifications_recipient_id ON notifications (recipient_id);
 CREATE INDEX idx_notifications_sender_id ON notifications (sender_id);
