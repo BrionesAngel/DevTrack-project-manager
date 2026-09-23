@@ -24,7 +24,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+  implementation ("org.springframework.boot:spring-boot-starter-flyway")
+  implementation ("org.flywaydb:flyway-database-postgresql")
 	runtimeOnly("org.postgresql:postgresql")
+
 	annotationProcessor("org.projectlombok:lombok")
 
   implementation("io.jsonwebtoken:jjwt-api:0.13.0")
